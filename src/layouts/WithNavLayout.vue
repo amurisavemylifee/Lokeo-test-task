@@ -64,7 +64,7 @@ button {
   grid-template-columns: 203px 1fr;
 }
 .page-content {
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   display: block;
   height: 100vh;
   overflow-y: scroll;

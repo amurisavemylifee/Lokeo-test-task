@@ -47,6 +47,7 @@ export default {
           return;
         }
         loginStore.setTokens(responseData);
+        modalStore.createModal("Вы успешно авторизовались!")
         router.push("/passes");
       } else {
         modalStore.createModal(Object.values(errors.value)[0]);

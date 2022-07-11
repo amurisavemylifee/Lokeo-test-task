@@ -7,9 +7,14 @@ export const usePassesStore = defineStore("PassesStore", {
 				{
 					id: "456496",
 					person: "Игорь Васильевич Иванов",
+					typeOfPassing: "Житель",
+					product: "Обслуживание участков",
 					transport: "T 400 TX 71",
+					urgency: { type: "Постоянный" },
+					region: "-",
 					passType: {
 						type: "QR",
+						value: "456496",
 					},
 					checkpoints: ["КПП 8 Меньшино"],
 					status: "Активен",
@@ -17,9 +22,14 @@ export const usePassesStore = defineStore("PassesStore", {
 				{
 					id: "75576",
 					person: "Игорь Васильевич Иванов",
+					typeOfPassing: "Житель",
+					product: "Обслуживание участков",
 					transport: "T 400 TX 71",
+					urgency: { type: "Постоянный" },
+					region: "-",
 					passType: {
 						type: "RFID",
+						value: "E28011052000745AFC160A59",
 					},
 					checkpoints: ["КПП 8 Меньшино", "КПП 6", "КПП Стрельно"],
 					status: "Деактивирован",
@@ -27,9 +37,14 @@ export const usePassesStore = defineStore("PassesStore", {
 				{
 					id: "785664",
 					person: "Игорь Васильевич Иванов",
+					typeOfPassing: "Житель",
+					product: "Обслуживание участков",
 					transport: "T 400 TX 71",
+					urgency: { type: "Постоянный" },
+					region: "-",
 					passType: {
 						type: "Обычный",
+						value: "785664",
 					},
 					checkpoints: ["КПП 8 Меньшино"],
 					status: "Заблокирован",
@@ -44,17 +59,22 @@ export const usePassesStore = defineStore("PassesStore", {
 			}).status = status;
 		},
 		createPass(data) {
-			let pass = 				{
+			let pass = {
 				id: data.ID,
 				person: data.person,
+				typeOfPassing: data.typeOfPassing,
+				product: data.product,
 				transport: data.transport,
+				urgency: { type: data.urgencyType },
+				region: data.region,
 				passType: {
 					type: data.typeOfPass,
+					value: data.passValue,
 				},
 				checkpoints: data.checkpoints,
 				status: "Активен",
-			}
-			this.passesList.push(pass)
-		}
+			};
+			this.passesList.push(pass);
+		},
 	},
 });

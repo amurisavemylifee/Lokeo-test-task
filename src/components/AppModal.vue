@@ -28,6 +28,7 @@ export default {
   width: 300px;
   min-height: 80px;
   border-radius: 8px;
+  border: 1px solid gray;
 }
 .close-button {
   position: absolute;
