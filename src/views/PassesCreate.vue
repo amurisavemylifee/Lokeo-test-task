@@ -52,50 +52,11 @@
       >Сохранить</app-button
     >
   </div>
-  <div class="pass-info">
-    <div class="dashed-block">
-      <h3>Ваш пропуск</h3>
-      <div class="info-item">
-        КПП<span v-for="item in checkpoints">{{ item }}</span>
-      </div>
-      <div class="info-item">
-        Поселок и участок<span>{{ region }}</span>
-      </div>
-      <div class="info-item">
-        Лицо<span>{{ person }}</span>
-      </div>
-      <div class="info-item">
-        Автомобиль<span>{{ transport }}</span>
-      </div>
-      <div class="info-item">
-        <span class="pass-info-title">Пропуск</span>
-        <div class="pass-info-item">
-          Тип проезжающего: <span>{{ typeOfPassing }}</span>
-        </div>
-        <div class="pass-info-item">
-          Тип пропуска: <span>{{ typeOfPass }}</span>
-        </div>
-        <div class="pass-info-item">
-          Срочность: <span>{{ urgencyType }}</span>
-        </div>
-        <div class="pass-info-item">
-          Продукт, по которому предоставляется пропуск:
-          <span>{{ product }}</span>
-        </div>
-        <div class="pass-info-item">
-          Идетификатор: <span>{{ ID }}</span>
-        </div>
-        <img
-          class="qr-code"
-          :src="`http://qrcoder.ru/code/?${ID}&4&0`"
-          v-if="ID && typeOfPass === 'QR'"
-        />
-      </div>
-    </div>
-  </div>
+  <passesCreateInfoCard :options="data" />
 </template>
 
 <script>
+import PassesCreateInfoCard from "../components/PassesCreateInfoCard.vue";
 import AppSelect from "../components/AppSelect.vue";
 import AppButton from "../components/AppButton.vue";
 import AppInput from "../components/AppInput.vue";
@@ -105,14 +66,17 @@ import { useModalStore } from "../store/useModalStore";
 import { useRouter } from "vue-router";
 export default {
   components: {
+    PassesCreateInfoCard,
     AppSelect,
     AppButton,
     AppInput,
   },
   setup() {
     const router = useRouter();
+
     const { createPass } = usePassesStore();
     const { createModal } = useModalStore();
+    
     const checkpoints = ref(["КПП 8 Меньшино"]);
     const region = ref("Меньшино");
     const person = ref("Игорь Васильевич Иванов");
@@ -124,18 +88,22 @@ export default {
     const ID = ref("");
     const passValue = ref("");
 
+    const data = {
+      checkpoints,
+      person,
+      transport,
+      typeOfPass,
+      ID,
+      region,
+      typeOfPassing,
+      urgencyType,
+      product,
+    };
+
     function saveHandler() {
       createPass({
-        checkpoints,
-        person,
-        transport,
-        typeOfPass,
+        ...data,
         passValue: passValue != "" ? passValue : ID.value,
-        ID,
-        region,
-        typeOfPassing,
-        urgencyType,
-        product,
       });
       createModal("Пропуск успешно создан!");
       router.push("/passes");
@@ -165,15 +133,11 @@ export default {
       }, 10000);
     });
     return {
+      data,
       saveHandler,
-      checkpoints,
-      region,
-      person,
-      transport,
       typeOfPassing,
       typeOfPass,
       urgencyType,
-      product,
       ID,
       passValue,
     };
@@ -189,11 +153,6 @@ export default {
   button + button {
     margin-left: 40px;
   }
-}
-.qr-code {
-  width: 250px;
-  height: 406px;
-  padding-top: 156px;
 }
 .selects-grid {
   display: grid;
@@ -213,52 +172,6 @@ export default {
     line-height: 35px;
     color: #2a341d;
     margin-right: 9px;
-  }
-}
-.pass-info {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background: #ffffff;
-  border-radius: 0px 25px 25px 0px;
-  padding: 10px;
-  box-shadow: -15px 0px 46px 0px hsla(0, 0%, 7%, 0.5);
-  width: 336px;
-  height: 100%;
-}
-.dashed-block {
-  border: 1px dashed #78b62c;
-  border-radius: 0px 25px 25px 0px;
-  height: 100%;
-  h3 {
-    padding: 35px 0 26px 32px;
-    font-weight: 900;
-    font-size: 20px;
-    line-height: 23px;
-    color: #2a341d;
-  }
-  .info-item {
-    padding: 0 0 13px 32px;
-    display: flex;
-    flex-direction: column;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    color: #2a341d;
-    span {
-      font-weight: 400;
-    }
-    .pass-info-title {
-      font-weight: 700;
-      color: #2a341d;
-      padding-bottom: 10px;
-    }
-    .pass-info-item {
-      color: #c3c7cf;
-      span {
-        color: #2a341d;
-      }
-    }
   }
 }
 </style>
